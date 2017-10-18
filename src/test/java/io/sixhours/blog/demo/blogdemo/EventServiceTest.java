@@ -80,6 +80,6 @@ public class EventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doThrow(new InterruptedException()).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(EventService.TopicType.POST, UUID.randomUUID().toString(), "value");
+        eventService.sendEvent(EventService.TopicType.POST, UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
     }
 }

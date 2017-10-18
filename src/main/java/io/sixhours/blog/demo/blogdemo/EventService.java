@@ -20,16 +20,32 @@ public class EventService {
     private static final Logger log = LoggerFactory.getLogger(EventService.class);
 
     enum TopicType {
-        POST("post");
+        POST("post", "{\"namespace\": \"io.sixhours.blog.demo.blogdemo\",\n" +
+                " \"type\": \"record\",\n" +
+                " \"name\": \"BlogPost\",\n" +
+                " \"fields\": [\n" +
+                "     {\"name\": \"id\", \"type\": \"string\"},\n" +
+                "     {\"name\": \"title\", \"type\": \"string\"},\n" +
+                "     {\"name\": \"body\", \"type\": \"string\"},\n" +
+                "     {\"name\": \"author\", \"type\": \"string\"},\n" +
+                "     {\"name\": \"date_created\",  \"type\": {\"type\": \"long\", \"logicalType\": \"timestamp-millis\"}}\n" +
+                " ]\n" +
+                "}");
 
         private final String topicName;
+        private final String schema;
 
-        TopicType(String topicName) {
+        TopicType(String topicName, String schema) {
             this.topicName = topicName;
+            this.schema = schema;
         }
 
         public String topicName() {
             return this.topicName;
+        }
+
+        public String schema() {
+            return this.schema;
         }
     }
 
@@ -51,31 +67,24 @@ public class EventService {
         return this.producer;
     }
 
-    public void sendEvent(TopicType topic, String key, Object value) {
+    public void sendEvent(TopicType topic, String key, Event value) {
 
         Schema.Parser parser = new Schema.Parser();
-        Schema schema = parser.parse("{\"namespace\": \"io.sixhours.blog.demo.blogdemo\",\n" +
-                " \"type\": \"record\",\n" +
-                " \"name\": \"BlogPost\",\n" +
-                " \"fields\": [\n" +
-                "     {\"name\": \"id\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"title\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"body\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"author\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"date_created\",  \"type\": {\"type\": \"long\", \"logicalType\": \"timestamp-millis\"}}\n" +
-                " ]\n" +
-                "}");
+        Schema schema = parser.parse(topic.schema());
 
         Injection<GenericRecord, byte[]> recordInjection = GenericAvroCodecs.toBinary(schema);
 
         GenericRecord data = new GenericData.Record(schema);
-        final BlogPostCreated event = (BlogPostCreated) value;
 
-        data.put("id", event.getId().toString());
-        data.put("title", event.getTitle());
-        data.put("body", event.getBody());
-        data.put("author", event.getAuthor());
-        data.put("date_created", event.getDateCreated().getTime());
+        if (value instanceof BlogPostCreated) {
+            final BlogPostCreated event = (BlogPostCreated) value;
+
+            data.put("id", event.getAggregateId().toString());
+            data.put("title", event.getTitle());
+            data.put("body", event.getBody());
+            data.put("author", event.getAuthor());
+            data.put("date_created", event.getDateCreated().getTime());
+        }
 
         byte[] bytes = recordInjection.apply(data);
 

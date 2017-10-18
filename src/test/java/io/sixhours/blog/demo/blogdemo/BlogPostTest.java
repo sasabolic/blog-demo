@@ -5,13 +5,11 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -36,7 +34,7 @@ public class BlogPostTest {
 
         final ArgumentCaptor<EventService.TopicType> topicTypeArgumentCaptor = ArgumentCaptor.forClass(EventService.TopicType.class);
 
-        verify(eventService).sendEvent(topicTypeArgumentCaptor.capture(), isA(String.class), isA(String.class));
+        verify(eventService).sendEvent(topicTypeArgumentCaptor.capture(), isA(String.class), isA(Event.class));
 
         assertThat(topicTypeArgumentCaptor.getValue(), is(EventService.TopicType.POST));
     }
@@ -56,7 +54,7 @@ public class BlogPostTest {
 
         blogPost.apply(event);
 
-        assertThat(blogPost, hasProperty("id", equalTo(event.getId())));
+        assertThat(blogPost, hasProperty("id", equalTo(event.getAggregateId())));
     }
 
     @Test

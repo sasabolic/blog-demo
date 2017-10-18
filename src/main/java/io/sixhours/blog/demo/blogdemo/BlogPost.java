@@ -20,13 +20,13 @@ public class BlogPost {
         // verify
 
         BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), command.getTitle(), command.getBody(), command.getAuthor(), new Date());
-        this.eventService.sendEvent(EventService.TopicType.POST, event.getId().toString(), event);
+        this.eventService.sendEvent(EventService.TopicType.POST, event.getAggregateId().toString(), event);
 
         apply(event);
     }
 
     public void apply(BlogPostCreated event) {
-        this.id = event.getId();
+        this.id = event.getAggregateId();
         this.title = event.getTitle();
         this.body = event.getBody();
         this.author = event.getAuthor();
