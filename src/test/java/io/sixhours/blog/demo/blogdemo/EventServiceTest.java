@@ -10,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -67,7 +68,7 @@ public class EventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doReturn(savedEvent).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(EventService.TopicType.POST, UUID.randomUUID().toString(), "value");
+        eventService.sendEvent(EventService.TopicType.POST, UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
 
         verify(producer).send(any(ProducerRecord.class));
     }
