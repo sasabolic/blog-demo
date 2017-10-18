@@ -83,4 +83,13 @@ public class BlogPostTest {
 
         assertThat(blogPost, hasProperty("dateCreated", equalTo(event.getDateCreated())));
     }
+
+    @Test
+    public void whenDeleteBlogPostThenInvokeApply() {
+        DeleteBlogPostCommand command = new DeleteBlogPostCommand(UUID.randomUUID());
+
+        blogPost.process(command);
+
+        verify(blogPost).apply(isA(BlogPostDeleted.class));
+    }
 }

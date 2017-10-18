@@ -9,6 +9,7 @@ public class BlogPost {
     private String body;
     private String author;
     private Date dateCreated;
+    private boolean deleted;
 
     private final EventService eventService;
 
@@ -25,12 +26,22 @@ public class BlogPost {
         apply(event);
     }
 
+    public void process(DeleteBlogPostCommand command) {
+
+        BlogPostDeleted event = new BlogPostDeleted(command.getAggregateId());
+        apply(event);
+    }
+
     public void apply(BlogPostCreated event) {
         this.id = event.getAggregateId();
         this.title = event.getTitle();
         this.body = event.getBody();
         this.author = event.getAuthor();
         this.dateCreated = event.getDateCreated();
+    }
+
+    public void apply(BlogPostDeleted event) {
+        this.deleted = true;
     }
 
     public UUID getId() {
@@ -51,5 +62,9 @@ public class BlogPost {
 
     public Date getDateCreated() {
         return dateCreated;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }
