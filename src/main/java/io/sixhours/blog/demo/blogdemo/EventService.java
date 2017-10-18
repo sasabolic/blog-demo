@@ -1,16 +1,11 @@
 package io.sixhours.blog.demo.blogdemo;
 
-import com.twitter.bijection.Injection;
-import com.twitter.bijection.avro.GenericAvroCodecs;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.avro.Schema;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -50,6 +45,7 @@ public class EventService {
     }
 
     private Producer<String, byte[]> producer;
+    private EventHandler handler = createFlow();
 
     public EventService() {
         Properties p = new Properties();
@@ -69,24 +65,7 @@ public class EventService {
 
     public void sendEvent(TopicType topic, String key, Event value) {
 
-        Schema.Parser parser = new Schema.Parser();
-        Schema schema = parser.parse(topic.schema());
-
-        Injection<GenericRecord, byte[]> recordInjection = GenericAvroCodecs.toBinary(schema);
-
-        GenericRecord data = new GenericData.Record(schema);
-
-        if (value instanceof BlogPostCreated) {
-            final BlogPostCreated event = (BlogPostCreated) value;
-
-            data.put("id", event.getAggregateId().toString());
-            data.put("title", event.getTitle());
-            data.put("body", event.getBody());
-            data.put("author", event.getAuthor());
-            data.put("date_created", event.getDateCreated().getTime());
-        }
-
-        byte[] bytes = recordInjection.apply(data);
+        final byte[] bytes = handler.handleRequest(value);
 
         ProducerRecord<String, byte[]> rec =
                 new ProducerRecord<>(topic.topicName(), key, bytes);
@@ -103,5 +82,14 @@ public class EventService {
                 getProducer().close();
             }
         }
+    }
+
+    private static EventHandler createFlow() {
+        EventHandler blogPostDeletedHandler = new BlogPostDeletedHandler();
+        EventHandler blogPostCreatedHandler = new BlogPostCreatedHandler();
+
+        blogPostDeletedHandler.setNext(blogPostCreatedHandler);
+
+        return blogPostDeletedHandler;
     }
 }
