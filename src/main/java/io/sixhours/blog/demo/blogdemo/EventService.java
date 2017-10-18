@@ -33,12 +33,12 @@ public class EventService {
         return this.producer;
     }
 
-    public void sendEvent(String key, Event value) {
+    public void sendEvent(Event value) {
 
         final byte[] bytes = handler.handleRequest(value);
 
         ProducerRecord<String, byte[]> rec =
-                new ProducerRecord<>(value.topicName, key, bytes);
+                new ProducerRecord<>(value.topicName, value.aggregateId.toString(), bytes);
 
         try {
             final RecordMetadata m = getProducer().send(rec).get();

@@ -29,7 +29,7 @@ public class BlogPostTest {
 
         blogPost.process(command);
 
-        verify(eventService).sendEvent(isA(String.class), isA(BlogPostCreated.class));
+        verify(eventService).sendEvent(isA(BlogPostCreated.class));
     }
 
     @Test

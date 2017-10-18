@@ -68,7 +68,7 @@ public class EventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doReturn(savedEvent).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
+        eventService.sendEvent(new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
 
         verify(producer).send(any(ProducerRecord.class));
     }
@@ -80,6 +80,6 @@ public class EventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doThrow(new InterruptedException()).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
+        eventService.sendEvent(new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
     }
 }
