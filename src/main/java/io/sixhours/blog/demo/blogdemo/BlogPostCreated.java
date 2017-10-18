@@ -3,7 +3,7 @@ package io.sixhours.blog.demo.blogdemo;
 import java.util.Date;
 import java.util.UUID;
 
-public class BlogPostCreated implements Event {
+public class BlogPostCreated implements BlogPostEvent {
 
     private final UUID aggregateId;
     private final String title;
