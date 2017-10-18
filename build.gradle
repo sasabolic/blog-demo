@@ -31,6 +31,8 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.apache.kafka:kafka-clients:0.11.0.1')
+    compile('org.apache.avro:avro:1.8.2')
+    compile('com.twitter:bijection-avro_2.11:0.9.6')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.hamcrest:hamcrest-all:1.3')
