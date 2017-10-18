@@ -1,8 +1,13 @@
 package io.sixhours.blog.demo.blogdemo;
 
-public interface BlogPostEvent extends Event {
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
-//    public BlogPostEvent(String aggregateId, ZonedDateTime date) {
-//        super(aggregateId, date);
-//    }
+public abstract class BlogPostEvent extends Event {
+
+    protected final String topicName = "post";
+
+    public BlogPostEvent(UUID aggregateId, ZonedDateTime date) {
+        super(aggregateId, date);
+    }
 }

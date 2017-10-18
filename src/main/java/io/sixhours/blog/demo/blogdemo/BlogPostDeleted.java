@@ -1,16 +1,15 @@
 package io.sixhours.blog.demo.blogdemo;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
-public class BlogPostDeleted implements BlogPostEvent {
-
-    private final UUID aggregateId;
+public class BlogPostDeleted extends BlogPostEvent {
 
     public BlogPostDeleted(UUID aggregateId) {
-        this.aggregateId = aggregateId;
+        super(aggregateId, ZonedDateTime.now());
     }
 
     public UUID getAggregateId() {
-        return aggregateId;
+        return super.aggregateId;
     }
 }

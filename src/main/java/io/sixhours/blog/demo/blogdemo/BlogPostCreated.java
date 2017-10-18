@@ -1,18 +1,18 @@
 package io.sixhours.blog.demo.blogdemo;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.UUID;
 
-public class BlogPostCreated implements BlogPostEvent {
+public class BlogPostCreated extends BlogPostEvent {
 
-    private final UUID aggregateId;
     private final String title;
     private final String body;
     private final String author;
     private final Date dateCreated;
 
     public BlogPostCreated(UUID aggregateId, String title, String body, String author, Date dateCreated) {
-        this.aggregateId = aggregateId;
+        super(aggregateId, ZonedDateTime.now());
         this.title = title;
         this.body = body;
         this.author = author;
@@ -20,7 +20,7 @@ public class BlogPostCreated implements BlogPostEvent {
     }
 
     public UUID getAggregateId() {
-        return aggregateId;
+        return super.aggregateId;
     }
 
     public String getTitle() {
