@@ -18,42 +18,41 @@ public class AvroService {
     private Injection<GenericRecord, byte[]> recordInjection;
     private GenericRecord record;
 
-    public AvroService() {
-
-    }
-
     public AvroService(String schemaLocation) {
-        Path path = null;
         try {
-            path = Paths.get(getClass().getClassLoader().getResource(schemaLocation).toURI());
+            Path path = Paths.get(getClass().getClassLoader().getResource(schemaLocation).toURI());
 
             StringBuilder data = new StringBuilder();
             Stream<String> lines = Files.lines(path);
             lines.forEach(line -> data.append(line).append("\n"));
             lines.close();
 
-            initialize(data.toString().trim());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            Schema.Parser parser = new Schema.Parser();
+            Schema schema = parser.parse(data.toString().trim());
+
+            recordInjection = GenericAvroCodecs.toBinary(schema);
+
+            record =  new GenericData.Record(schema);
+
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException("Could not create AvroService", e);
         }
     }
 
-    private void initialize(String schemaS) {
-        Schema.Parser parser = new Schema.Parser();
-        Schema schema = parser.parse(schemaS);
 
-        recordInjection = GenericAvroCodecs.toBinary(schema);
+    public void addField(String key, Object value) {
+        getRecord().put(key, value);
+    }
 
-        record =  new GenericData.Record(schema);
+    byte[] getData() {
+        return getRecordInjection().apply(getRecord());
+    }
+
+    public Injection<GenericRecord, byte[]> getRecordInjection() {
+        return recordInjection;
     }
 
     public GenericRecord getRecord() {
         return record;
-    }
-
-    byte[] getData() {
-        return recordInjection.apply(record);
     }
 }

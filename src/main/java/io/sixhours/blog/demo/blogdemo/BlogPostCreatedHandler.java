@@ -1,10 +1,5 @@
 package io.sixhours.blog.demo.blogdemo;
 
-import com.twitter.bijection.Injection;
-import com.twitter.bijection.avro.GenericAvroCodecs;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,11 +28,11 @@ public class BlogPostCreatedHandler implements EventHandler {
         if (event instanceof BlogPostCreated) {
             log.debug("Event BlogPostCreated: '{}'", ((BlogPostCreated) event).getAggregateId());
 
-            avroService.getRecord().put("aggregate_id", ((BlogPostCreated) event).getAggregateId().toString());
-            avroService.getRecord().put("title", ((BlogPostCreated) event).getTitle());
-            avroService.getRecord().put("body", ((BlogPostCreated) event).getBody());
-            avroService.getRecord().put("author", ((BlogPostCreated) event).getAuthor());
-            avroService.getRecord().put("date_created", ((BlogPostCreated) event).getDateCreated().getTime());
+            avroService.addField("aggregate_id", ((BlogPostCreated) event).getAggregateId().toString());
+            avroService.addField("title", ((BlogPostCreated) event).getTitle());
+            avroService.addField("body", ((BlogPostCreated) event).getBody());
+            avroService.addField("author", ((BlogPostCreated) event).getAuthor());
+            avroService.addField("date_created", ((BlogPostCreated) event).getDateCreated().getTime());
 
             return avroService.getData();
         } else if (this.next != null) {

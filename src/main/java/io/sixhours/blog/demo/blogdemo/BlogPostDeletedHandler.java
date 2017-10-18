@@ -28,7 +28,7 @@ public class BlogPostDeletedHandler implements EventHandler {
         if (event instanceof BlogPostDeleted) {
             log.debug("Event BlogPostDeleted: '{}'", ((BlogPostDeleted) event).getAggregateId());
 
-            avroService.getRecord().put("aggregate_id", ((BlogPostDeleted) event).getAggregateId().toString());
+            avroService.addField("aggregate_id", ((BlogPostDeleted) event).getAggregateId().toString());
 
             return avroService.getData();
         } else if (this.next != null) {
