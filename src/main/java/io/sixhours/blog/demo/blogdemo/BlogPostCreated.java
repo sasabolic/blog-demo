@@ -3,24 +3,24 @@ package io.sixhours.blog.demo.blogdemo;
 import java.util.Date;
 import java.util.UUID;
 
-public class BlogPostCreated {
+public class BlogPostCreated implements Event {
 
-    private final UUID id;
+    private final UUID aggregateId;
     private final String title;
     private final String body;
     private final String author;
     private final Date dateCreated;
 
-    public BlogPostCreated(UUID id, String title, String body, String author, Date dateCreated) {
-        this.id = id;
+    public BlogPostCreated(UUID aggregateId, String title, String body, String author, Date dateCreated) {
+        this.aggregateId = aggregateId;
         this.title = title;
         this.body = body;
         this.author = author;
         this.dateCreated = dateCreated;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getAggregateId() {
+        return aggregateId;
     }
 
     public String getTitle() {
