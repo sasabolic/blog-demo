@@ -1,0 +1,7 @@
+{"namespace": "io.sixhours.blog.demo.blogdemo",
+ "type": "record",
+ "name": "BlogPost",
+ "fields": [
+     {"name": "aggregate_id", "type": "string"}
+ ]
+}
