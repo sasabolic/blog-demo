@@ -34,7 +34,7 @@ public class EventServiceTest {
     public void setUp() {
         eventService = spy(new EventService());
         producer = mock(Producer.class);
-        RecordMetadata metadata = new RecordMetadata(new TopicPartition(EventService.TopicType.POST.topicName(), 1), 1, 1, 1, Long.valueOf(1), 1, 1);
+        RecordMetadata metadata = new RecordMetadata(new TopicPartition("post", 1), 1, 1, 1, Long.valueOf(1), 1, 1);
         savedEvent = new Future<RecordMetadata>() {
             @Override
             public boolean cancel(boolean mayInterruptIfRunning) {
@@ -68,7 +68,7 @@ public class EventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doReturn(savedEvent).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(EventService.TopicType.POST, UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
+        eventService.sendEvent(UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
 
         verify(producer).send(any(ProducerRecord.class));
     }
@@ -80,6 +80,6 @@ public class EventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doThrow(new InterruptedException()).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(EventService.TopicType.POST, UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
+        eventService.sendEvent(UUID.randomUUID().toString(), new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
     }
 }

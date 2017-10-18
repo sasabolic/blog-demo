@@ -21,7 +21,7 @@ public class BlogPost {
         // verify
 
         BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), command.getTitle(), command.getBody(), command.getAuthor(), new Date());
-        this.eventService.sendEvent(EventService.TopicType.POST, event.getAggregateId().toString(), event);
+        this.eventService.sendEvent(event.getAggregateId().toString(), event);
 
         apply(event);
     }

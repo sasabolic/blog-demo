@@ -2,18 +2,15 @@ package io.sixhours.blog.demo.blogdemo;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import java.util.Date;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class BlogPostTest {
 
@@ -32,11 +29,7 @@ public class BlogPostTest {
 
         blogPost.process(command);
 
-        final ArgumentCaptor<EventService.TopicType> topicTypeArgumentCaptor = ArgumentCaptor.forClass(EventService.TopicType.class);
-
-        verify(eventService).sendEvent(topicTypeArgumentCaptor.capture(), isA(String.class), isA(Event.class));
-
-        assertThat(topicTypeArgumentCaptor.getValue(), is(EventService.TopicType.POST));
+        verify(eventService).sendEvent(isA(String.class), isA(BlogPostCreated.class));
     }
 
     @Test

@@ -14,36 +14,6 @@ public class EventService {
 
     private static final Logger log = LoggerFactory.getLogger(EventService.class);
 
-    enum TopicType {
-        POST("post", "{\"namespace\": \"io.sixhours.blog.demo.blogdemo\",\n" +
-                " \"type\": \"record\",\n" +
-                " \"name\": \"BlogPost\",\n" +
-                " \"fields\": [\n" +
-                "     {\"name\": \"id\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"title\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"body\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"author\", \"type\": \"string\"},\n" +
-                "     {\"name\": \"date_created\",  \"type\": {\"type\": \"long\", \"logicalType\": \"timestamp-millis\"}}\n" +
-                " ]\n" +
-                "}");
-
-        private final String topicName;
-        private final String schema;
-
-        TopicType(String topicName, String schema) {
-            this.topicName = topicName;
-            this.schema = schema;
-        }
-
-        public String topicName() {
-            return this.topicName;
-        }
-
-        public String schema() {
-            return this.schema;
-        }
-    }
-
     private Producer<String, byte[]> producer;
     private EventHandler handler = createFlow();
 
@@ -63,7 +33,7 @@ public class EventService {
         return this.producer;
     }
 
-    public void sendEvent(TopicType topic, String key, Event value) {
+    public void sendEvent(String key, Event value) {
 
         final byte[] bytes = handler.handleRequest(value);
 
