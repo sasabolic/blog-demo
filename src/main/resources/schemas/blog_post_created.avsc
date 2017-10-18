@@ -1,6 +1,6 @@
 {"namespace": "io.sixhours.blog.demo.blogdemo",
  "type": "record",
- "name": "BlogPost",
+ "name": "BlogPostCreated",
  "fields": [
      {"name": "aggregate_id", "type": "string"},
      {"name": "title", "type": "string"},
