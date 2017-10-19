@@ -57,8 +57,10 @@ public class KafkaEventService implements EventService {
     private static EventHandler createFlow() {
         EventHandler blogPostDeletedHandler = new BlogPostDeletedHandler();
         EventHandler blogPostCreatedHandler = new BlogPostCreatedHandler();
+        EventHandler blogPostUpdatedHandler = new BlogPostUpdatedHandler();
 
         blogPostDeletedHandler.setNext(blogPostCreatedHandler);
+        blogPostCreatedHandler.setNext(blogPostUpdatedHandler);
 
         return blogPostDeletedHandler;
     }

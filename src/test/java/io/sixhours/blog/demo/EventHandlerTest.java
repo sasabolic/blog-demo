@@ -13,14 +13,17 @@ public class EventHandlerTest {
 
     private BlogPostCreatedHandler blogPostCreatedHandler;
     private BlogPostDeletedHandler blogPostDeletedHandler;
+    private BlogPostUpdatedHandler blogPostUpdatedHandler;
     private EventHandler eventHandler;
 
     @Before
     public void setUp() {
         blogPostDeletedHandler = spy(BlogPostDeletedHandler.class);
         blogPostCreatedHandler = Mockito.spy(BlogPostCreatedHandler.class);
+        blogPostUpdatedHandler = Mockito.spy(BlogPostUpdatedHandler.class);
 
         blogPostDeletedHandler.setNext(blogPostCreatedHandler);
+        blogPostCreatedHandler.setNext(blogPostUpdatedHandler);
 
         eventHandler = blogPostDeletedHandler;
     }
@@ -41,5 +44,14 @@ public class EventHandlerTest {
         eventHandler.handleRequest(event);
 
         verify(blogPostCreatedHandler, times(0)).handleRequest(event);
+    }
+
+    @Test
+    public void whenBlogPostCreatedThenNotInvokeBlogPostUpdatedHandler() {
+        final BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+
+        eventHandler.handleRequest(event);
+
+        verify(blogPostCreatedHandler, times(1)).handleRequest(event);
     }
 }
