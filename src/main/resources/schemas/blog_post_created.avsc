@@ -1,4 +1,4 @@
-{"namespace": "io.sixhours.blog.demo.blogdemo",
+{"namespace": "io.sixhours.blog.demo",
  "type": "record",
  "name": "BlogPostCreated",
  "fields": [

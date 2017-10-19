@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo.blogdemo;
+package io.sixhours.blog.demo;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;

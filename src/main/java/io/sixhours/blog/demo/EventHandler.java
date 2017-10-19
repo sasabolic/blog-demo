@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo.blogdemo;
+package io.sixhours.blog.demo;
 
 /**
  * The abstract class of handler used in a chain.

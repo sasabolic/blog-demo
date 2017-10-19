@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo.blogdemo;
+package io.sixhours.blog.demo;
 
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class EventServiceTest {
 
     @Before
     public void setUp() {
-        eventService = spy(new EventService());
+        eventService = Mockito.spy(new EventService());
         producer = mock(Producer.class);
         RecordMetadata metadata = new RecordMetadata(new TopicPartition("post", 1), 1, 1, 1, Long.valueOf(1), 1, 1);
         savedEvent = new Future<RecordMetadata>() {

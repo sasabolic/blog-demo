@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo.blogdemo;
+package io.sixhours.blog.demo;
 
 import com.twitter.bijection.Injection;
 import com.twitter.bijection.avro.GenericAvroCodecs;

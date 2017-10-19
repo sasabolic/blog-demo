@@ -1,7 +1,8 @@
-package io.sixhours.blog.demo.blogdemo;
+package io.sixhours.blog.demo;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.UUID;
@@ -17,7 +18,7 @@ public class EventHandlerTest {
     @Before
     public void setUp() {
         blogPostDeletedHandler = spy(BlogPostDeletedHandler.class);
-        blogPostCreatedHandler = spy(BlogPostCreatedHandler.class);
+        blogPostCreatedHandler = Mockito.spy(BlogPostCreatedHandler.class);
 
         blogPostDeletedHandler.setNext(blogPostCreatedHandler);
 
