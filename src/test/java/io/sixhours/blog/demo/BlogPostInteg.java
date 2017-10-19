@@ -9,7 +9,7 @@ public class BlogPostInteg {
 
     @Before
     public void setUp() {
-        blogPost = new BlogPost(new EventService());
+        blogPost = new BlogPost(new KafkaEventService());
     }
 
     @Test
