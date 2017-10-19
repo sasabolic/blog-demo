@@ -30,6 +30,14 @@ public class BlogPost {
 
         BlogPostDeleted event = new BlogPostDeleted(command.getAggregateId());
         apply(event);
+        this.eventService.sendEvent(event);
+    }
+
+    public void process(UpdateBlogPostCommand command) {
+
+        BlogPostUpdated event = new BlogPostUpdated(command.getAggregateId(), command.getTitle(), command.getBody(), command.getAuthor());
+        this.eventService.sendEvent(event);
+        apply(event);
     }
 
     public void apply(BlogPostCreated event) {
@@ -42,6 +50,13 @@ public class BlogPost {
 
     public void apply(BlogPostDeleted event) {
         this.deleted = true;
+    }
+
+    public void apply(BlogPostUpdated event) {
+        this.id = event.getAggregateId();
+        this.title = event.getTitle();
+        this.body = event.getBody();
+        this.author = event.getAuthor();
     }
 
     public UUID getId() {

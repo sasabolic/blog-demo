@@ -24,7 +24,7 @@ public class BlogPostTest {
     }
 
     @Test
-    public void whenCreateBlogPostThenBlogPostEventCreatedIsPublished() {
+    public void givenCreateBlogPostCommandWhenProcessThenInovkeEventServiceSendEvent() {
         CreateBlogPostCommand command = new CreateBlogPostCommand("Title", "Body", "Author");
 
         blogPost.process(command);
@@ -33,7 +33,7 @@ public class BlogPostTest {
     }
 
     @Test
-    public void whenCreateBlogPostThenInvokeApply() {
+    public void givenCreateBlogPostCommandWhenProcessThenInvokeApply() {
         CreateBlogPostCommand command = new CreateBlogPostCommand("Title", "Body", "Author");
 
         blogPost.process(command);
@@ -42,7 +42,7 @@ public class BlogPostTest {
     }
 
     @Test
-    public void whenBlogPostCreatedThenIdIsStored() {
+    public void givenBlogPostCreatedWhenApplyThenIdIsStored() {
         BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
 
         blogPost.apply(event);
@@ -51,16 +51,16 @@ public class BlogPostTest {
     }
 
     @Test
-    public void whenBlogPostCreatedThenTitleIsStored() {
+    public void givenBlogPostCreatedWhenApplyThenTitleIsStored() {
         BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
 
         blogPost.apply(event);
 
-        assertThat(blogPost, hasProperty("title", equalTo(event.getTitle())));
+        assertThat(blogPost, hasProperty("deleted", equalTo(false)));
     }
 
     @Test
-    public void whenBlogPostCreatedThenBodyIsStored() {
+    public void givenBlogPostCreatedWhenApplyThenBodyIsStored() {
         BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
 
         blogPost.apply(event);
@@ -69,7 +69,7 @@ public class BlogPostTest {
     }
 
     @Test
-    public void whenBlogPostCreatedThenCreatedDateIsStored() {
+    public void givenBlogPostCreatedWhenApplyThenCreatedDateIsStored() {
         BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
 
         blogPost.apply(event);
@@ -78,11 +78,92 @@ public class BlogPostTest {
     }
 
     @Test
-    public void whenDeleteBlogPostThenInvokeApply() {
+    public void givenBlogPostCreatedWhenApplyThenDeleteIsFalse() {
+        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+
+        blogPost.apply(event);
+
+        assertThat(blogPost, hasProperty("dateCreated", equalTo(event.getDateCreated())));
+    }
+
+    @Test
+    public void givenDeleteBlogPostCommandWhenProcessThenInvokeApply() {
         DeleteBlogPostCommand command = new DeleteBlogPostCommand(UUID.randomUUID());
 
         blogPost.process(command);
 
         verify(blogPost).apply(isA(BlogPostDeleted.class));
+    }
+
+    @Test
+    public void givenDeleteBlogPostCommandWhenProcessThenInovkeEventServiceSendEvent() {
+        DeleteBlogPostCommand command = new DeleteBlogPostCommand(UUID.randomUUID());
+
+        blogPost.process(command);
+
+        verify(eventService).sendEvent(isA(BlogPostDeleted.class));
+    }
+
+    @Test
+    public void givenBlogPostDeletedWhenApplyThenDeleteIsTrue() {
+        BlogPostDeleted event = new BlogPostDeleted(UUID.randomUUID());
+
+        blogPost.apply(event);
+
+        assertThat(blogPost, hasProperty("deleted", equalTo(true)));
+    }
+
+    @Test
+    public void givenUpdateBlogPostCommandWhenProcessThenInvokeApply() {
+        UpdateBlogPostCommand command = new UpdateBlogPostCommand(UUID.randomUUID(), "Title1", "Body1", "Author1");
+
+        blogPost.process(command);
+
+        verify(blogPost).apply(isA(BlogPostUpdated.class));
+    }
+
+    @Test
+    public void givenUpdateBlogPostCommandWhenProcessThenInovkeEventServiceSendEvent() {
+        UpdateBlogPostCommand command = new UpdateBlogPostCommand(UUID.randomUUID(), "Title1", "Body1", "Author1");
+
+        blogPost.process(command);
+
+        verify(eventService).sendEvent(isA(BlogPostUpdated.class));
+    }
+
+    @Test
+    public void givenBlogPostUpdatedWhenApplyThenIdIsStored() {
+        BlogPostUpdated event = new BlogPostUpdated(UUID.randomUUID(), "Title1", "Body1", "Author1");
+
+        blogPost.apply(event);
+
+        assertThat(blogPost, hasProperty("id", equalTo(event.getAggregateId())));
+    }
+
+    @Test
+    public void givenBlogPostUpdatedWhenApplyThenTitleIsStored() {
+        BlogPostUpdated event = new BlogPostUpdated(UUID.randomUUID(), "Title1", "Body1", "Author1");
+
+        blogPost.apply(event);
+
+        assertThat(blogPost, hasProperty("title", equalTo(event.getTitle())));
+    }
+
+    @Test
+    public void givenBlogPostUpdatedWhenApplyThenBodyIsStored() {
+        BlogPostUpdated event = new BlogPostUpdated(UUID.randomUUID(), "Title1", "Body1", "Author1");
+
+        blogPost.apply(event);
+
+        assertThat(blogPost, hasProperty("body", equalTo(event.getBody())));
+    }
+
+    @Test
+    public void givenBlogPostUpdatedWhenApplyThenAuthorIsStored() {
+        BlogPostUpdated event = new BlogPostUpdated(UUID.randomUUID(), "Title1", "Body1", "Author1");
+
+        blogPost.apply(event);
+
+        assertThat(blogPost, hasProperty("author", equalTo(event.getAuthor())));
     }
 }
