@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 /**
- * The type used to handle {@link BlogPostDeleted} events.
+ * Handles {@link BlogPostDeleted} events.
  *
  * @author Sasa Bolic
  */

@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 /**
- * The type used to handle {@link BlogPostUpdated} events.
+ * Handles {@link BlogPostUpdated} events.
  *
  * @author Sasa Bolic
  */

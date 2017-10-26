@@ -1,7 +1,7 @@
 package io.sixhours.blog.demo;
 
 /**
- * The abstract class of handler used in a chain.
+ * The handler used in a chain.
  *
  * @author Sasa Bolic
  */

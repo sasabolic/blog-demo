@@ -10,6 +10,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Event service using Kafka to send events.
+ *
+ * @author Sasa Bolic
+ */
 public class KafkaEventService implements EventService {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaEventService.class);
@@ -17,6 +22,9 @@ public class KafkaEventService implements EventService {
     private Producer<String, byte[]> producer;
     private EventHandler handler = createFlow();
 
+    /**
+     * Instantiates a new {@code KafkaEventService}.
+     */
     public KafkaEventService() {
         Properties p = new Properties();
 
@@ -29,6 +37,11 @@ public class KafkaEventService implements EventService {
 
     }
 
+    /**
+     * Returns {@link Producer}.
+     *
+     * @return the producer
+     */
     Producer<String, byte[]> getProducer() {
         return this.producer;
     }

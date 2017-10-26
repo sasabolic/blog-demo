@@ -13,11 +13,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+/**
+ * Service used to serialize data with Avro.
+ *
+ * @author Sasa Bolic
+ */
 public class AvroService {
 
     private Injection<GenericRecord, byte[]> recordInjection;
     private GenericRecord record;
 
+    /**
+     * Instantiates a new {@code AvroService}.
+     *
+     * @param schemaLocation the schema location
+     */
     public AvroService(String schemaLocation) {
         try {
             Path path = Paths.get(getClass().getClassLoader().getResource(schemaLocation).toURI());
@@ -40,18 +50,39 @@ public class AvroService {
     }
 
 
+    /**
+     * Adds field to Avro record.
+     *
+     * @param key   the key
+     * @param value the value
+     */
     public void addField(String key, Object value) {
         getRecord().put(key, value);
     }
 
+    /**
+     * Returns serialized data as byte array.
+     *
+     * @return the byte [ ]
+     */
     byte[] getData() {
         return getRecordInjection().apply(getRecord());
     }
 
+    /**
+     * Returns record {@link Injection}.
+     *
+     * @return the record injection
+     */
     public Injection<GenericRecord, byte[]> getRecordInjection() {
         return recordInjection;
     }
 
+    /**
+     * Returns  {@link GenericRecord}.
+     *
+     * @return the record
+     */
     public GenericRecord getRecord() {
         return record;
     }
