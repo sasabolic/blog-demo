@@ -1,7 +1,7 @@
 version: '3'
 services:
-  demo-app:
-    image: blog-demo
+  blog-demo-command:
+    image: blog-demo-command
     ports:
       - 8080:8080
     depends_on:
