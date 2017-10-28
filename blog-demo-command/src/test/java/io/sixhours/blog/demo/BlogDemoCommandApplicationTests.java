@@ -4,7 +4,7 @@ import org.junit.Test;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
-public class BlogDemoApplicationTests {
+public class BlogDemoCommandApplicationTests {
 
 	@Test
 	public void contextLoads() {

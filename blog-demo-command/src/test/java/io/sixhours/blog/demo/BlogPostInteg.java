@@ -7,12 +7,12 @@ public class BlogPostInteg {
 
     private BlogPost blogPost;
 
-    @Before
+//    @Before
     public void setUp() {
         blogPost = new BlogPost(new KafkaEventService());
     }
 
-    @Test
+//    @Test
     public void test() {
         blogPost.process(new CreateBlogPostCommand("Title", "Body", "Author"));
     }

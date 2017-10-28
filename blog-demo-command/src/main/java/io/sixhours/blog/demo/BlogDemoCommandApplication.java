@@ -4,12 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Blog demo application.
+ * Blog demo command application.
  *
  * @author Sasa Bolic
  */
 @SpringBootApplication
-public class BlogDemoApplication {
+public class BlogDemoCommandApplication {
 
 	/**
 	 * The entry point of application.
@@ -17,6 +17,6 @@ public class BlogDemoApplication {
 	 * @param args the input arguments
 	 */
 	public static void main(String[] args) {
-		SpringApplication.run(BlogDemoApplication.class, args);
+		SpringApplication.run(BlogDemoCommandApplication.class, args);
 	}
 }
