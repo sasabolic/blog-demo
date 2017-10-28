@@ -8,6 +8,14 @@ services:
       - zookeeper
       - kafka
       - kafka1
+  blog-demo-query:
+    image: blog-demo-query
+    ports:
+      - 8081:8081
+    depends_on:
+      - zookeeper
+      - kafka
+      - kafka1
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
