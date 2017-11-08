@@ -17,6 +17,6 @@ public abstract class BlogPostEvent extends Event {
      * @param date        the date
      */
     public BlogPostEvent(UUID aggregateId, ZonedDateTime date) {
-        super(aggregateId, date, "post");
+        super(aggregateId, date, "blog-demo.post");
     }
 }

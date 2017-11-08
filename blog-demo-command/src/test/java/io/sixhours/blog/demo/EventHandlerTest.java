@@ -32,26 +32,26 @@ public class EventHandlerTest {
     public void whenBlogPostCreatedThenInvokeBlogPostCreatedHandler() {
         final BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
 
-        eventHandler.handleRequest(event);
+        eventHandler.encode(event);
 
-        verify(blogPostCreatedHandler, times(1)).handleRequest(event);
+        verify(blogPostCreatedHandler, times(1)).encode(event);
     }
 
     @Test
     public void whenBlogPostDeletedThenNotInvokeBlogPostCreatedHandler() {
         final BlogPostDeleted event = new BlogPostDeleted(UUID.randomUUID());
 
-        eventHandler.handleRequest(event);
+        eventHandler.encode(event);
 
-        verify(blogPostCreatedHandler, times(0)).handleRequest(event);
+        verify(blogPostCreatedHandler, times(0)).encode(event);
     }
 
     @Test
     public void whenBlogPostCreatedThenNotInvokeBlogPostUpdatedHandler() {
         final BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
 
-        eventHandler.handleRequest(event);
+        eventHandler.encode(event);
 
-        verify(blogPostCreatedHandler, times(1)).handleRequest(event);
+        verify(blogPostCreatedHandler, times(1)).encode(event);
     }
 }

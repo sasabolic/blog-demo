@@ -30,7 +30,7 @@ public class AvroService {
      */
     public AvroService(String schemaLocation) {
         try {
-            Path path = Paths.get(getClass().getClassLoader().getResource(schemaLocation).toURI());
+            Path path = Paths.get(AvroService.class.getClassLoader().getResource(schemaLocation).toURI());
 
             StringBuilder data = new StringBuilder();
             Stream<String> lines = Files.lines(path);

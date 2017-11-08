@@ -1,5 +1,8 @@
 package io.sixhours.blog.demo;
 
+import org.apache.avro.generic.GenericRecord;
+import org.apache.kafka.clients.producer.ProducerRecord;
+
 /**
  * The handler used in a chain.
  *
@@ -19,6 +22,6 @@ public interface EventHandler {
      *
      * @param event the event
      */
-    byte[] handleRequest(Event event);
+    ProducerRecord encode(Event event);
 
 }

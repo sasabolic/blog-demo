@@ -48,10 +48,7 @@ public class KafkaEventService implements EventService {
 
     public void sendEvent(Event value) {
 
-        final byte[] bytes = handler.handleRequest(value);
-
-        ProducerRecord<String, byte[]> rec =
-                new ProducerRecord<>(value.topicName, value.aggregateId.toString(), bytes);
+        final ProducerRecord<String, byte[]> rec = handler.encode(value);
 
         try {
             final RecordMetadata m = getProducer().send(rec).get();
@@ -62,7 +59,7 @@ public class KafkaEventService implements EventService {
             throw new RuntimeException(e);
         } finally {
             if (getProducer() != null) {
-                getProducer().close();
+//                getProducer().close();
             }
         }
     }
