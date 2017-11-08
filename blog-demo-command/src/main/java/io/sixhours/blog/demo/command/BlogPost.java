@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
 import java.util.Date;
 import java.util.UUID;

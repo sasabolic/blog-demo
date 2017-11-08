@@ -1,6 +1,5 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
-import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 /**

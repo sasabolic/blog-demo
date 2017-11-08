@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -30,7 +30,7 @@ public class KafkaEventServiceTest {
 
     @Before
     public void setUp() {
-        eventService = spy(new KafkaEventService());
+        eventService = Mockito.spy(new KafkaEventService());
         producer = mock(Producer.class);
         RecordMetadata metadata = new RecordMetadata(new TopicPartition("post", 1), 1, 1, 1, Long.valueOf(1), 1, 1);
         savedEvent = new Future<RecordMetadata>() {

@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
 import org.junit.Before;
 import org.junit.Test;

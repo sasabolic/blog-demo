@@ -1,32 +1,36 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 /**
- * Command used to update blog post.
+ * Event triggered when blog post is created.
  *
  * @author Sasa Bolic
  */
-public class UpdateBlogPostCommand {
+public class BlogPostCreated extends BlogPostEvent {
 
-    private final UUID aggregateId;
     private final String title;
     private final String body;
     private final String author;
+    private final Date dateCreated;
 
     /**
-     * Instantiates a new {@code UpdateBlogPostCommand}.
+     * Instantiates a new {@code BlogPostCreated} event.
      *
      * @param aggregateId the aggregate id
      * @param title       the title
      * @param body        the body
      * @param author      the author
+     * @param dateCreated the date created
      */
-    public UpdateBlogPostCommand(UUID aggregateId, String title, String body, String author) {
-        this.aggregateId = aggregateId;
+    public BlogPostCreated(UUID aggregateId, String title, String body, String author, Date dateCreated) {
+        super(aggregateId, ZonedDateTime.now());
         this.title = title;
         this.body = body;
         this.author = author;
+        this.dateCreated = dateCreated;
     }
 
     /**
@@ -35,7 +39,7 @@ public class UpdateBlogPostCommand {
      * @return the aggregate id
      */
     public UUID getAggregateId() {
-        return aggregateId;
+        return super.aggregateId;
     }
 
     /**
@@ -63,5 +67,14 @@ public class UpdateBlogPostCommand {
      */
     public String getAuthor() {
         return author;
+    }
+
+    /**
+     * Returns date created.
+     *
+     * @return the date created
+     */
+    public Date getDateCreated() {
+        return dateCreated;
     }
 }

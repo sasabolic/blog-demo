@@ -1,7 +1,8 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public class BlogPostTest {
     @Before
     public void setUp() {
         eventService = mock(EventService.class);
-        blogPost = spy(new BlogPost(eventService));
+        blogPost = Mockito.spy(new BlogPost(eventService));
     }
 
     @Test

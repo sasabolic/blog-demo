@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;

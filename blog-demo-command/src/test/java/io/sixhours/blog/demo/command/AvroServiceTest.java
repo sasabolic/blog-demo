@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo;
+package io.sixhours.blog.demo.command;
 
 import com.twitter.bijection.Injection;
 import org.apache.avro.generic.GenericRecord;
