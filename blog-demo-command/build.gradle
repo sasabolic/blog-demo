@@ -14,6 +14,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -70,6 +71,13 @@ sourceSets {
 			srcDir file('src/integration-test/java')
 		}
 		resources.srcDir file('src/integration-test/resources')
+	}
+}
+
+idea {
+	module {
+		testSourceDirs += project.sourceSets.integrationTest.java.srcDirs
+		testSourceDirs += project.sourceSets.integrationTest.resources.srcDirs
 	}
 }
 
