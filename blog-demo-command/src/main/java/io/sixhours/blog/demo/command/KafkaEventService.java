@@ -1,9 +1,8 @@
 package io.sixhours.blog.demo.command;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,15 +25,12 @@ public class KafkaEventService implements EventService {
      * Instantiates a new {@code KafkaEventService}.
      */
     public KafkaEventService() {
-        Properties p = new Properties();
+        this("localhost:9092");
 
-        p.put("bootstrap.servers", "localhost:9092");
-        p.put("client.id", "blog-demo-producer");
-        p.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        p.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
+    }
 
-        producer = new KafkaProducer<>(p);
-
+    public KafkaEventService(String bootStrapServers) {
+        createProducer(bootStrapServers);
     }
 
     /**
@@ -74,4 +70,18 @@ public class KafkaEventService implements EventService {
 
         return blogPostDeletedHandler;
     }
+
+    private void createProducer(String bootStrapServer) {
+        long start = System.currentTimeMillis();
+        Properties p = new Properties();
+
+        p.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServer);
+        p.put(ProducerConfig.CLIENT_ID_CONFIG, "blog-demo-producer");
+        p.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        p.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
+
+        producer = new KafkaProducer<>(p);
+        log.info("SALE PRODUCER CREATED in {}ms", System.currentTimeMillis() - start);
+    }
+
 }
