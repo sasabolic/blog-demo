@@ -1,7 +1,7 @@
 package io.sixhours.blog.demo.command;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -14,7 +14,7 @@ public class BlogPostCreated extends BlogPostEvent {
     private final String title;
     private final String body;
     private final String author;
-    private final Date dateCreated;
+    private final Instant dateCreated;
 
     /**
      * Instantiates a new {@code BlogPostCreated} event.
@@ -25,7 +25,7 @@ public class BlogPostCreated extends BlogPostEvent {
      * @param author      the author
      * @param dateCreated the date created
      */
-    public BlogPostCreated(UUID aggregateId, String title, String body, String author, Date dateCreated) {
+    public BlogPostCreated(UUID aggregateId, String title, String body, String author, Instant dateCreated) {
         super(aggregateId, ZonedDateTime.now());
         this.title = title;
         this.body = body;
@@ -74,7 +74,7 @@ public class BlogPostCreated extends BlogPostEvent {
      *
      * @return the date created
      */
-    public Date getDateCreated() {
+    public Instant getDateCreated() {
         return dateCreated;
     }
 }

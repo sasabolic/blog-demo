@@ -4,10 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class EventHandlerTest {
 
@@ -30,7 +31,7 @@ public class EventHandlerTest {
 
     @Test
     public void whenBlogPostCreatedThenInvokeBlogPostCreatedHandler() {
-        final BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+        final BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now());
 
         eventHandler.encode(event);
 
@@ -48,7 +49,7 @@ public class EventHandlerTest {
 
     @Test
     public void whenBlogPostCreatedThenNotInvokeBlogPostUpdatedHandler() {
-        final BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+        final BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now());
 
         eventHandler.encode(event);
 

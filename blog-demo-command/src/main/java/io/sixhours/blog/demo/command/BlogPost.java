@@ -1,6 +1,6 @@
 package io.sixhours.blog.demo.command;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -13,7 +13,7 @@ public class BlogPost {
     private String title;
     private String body;
     private String author;
-    private Date dateCreated;
+    private Instant dateCreated;
     private boolean deleted;
 
     private final EventService eventService;
@@ -35,7 +35,7 @@ public class BlogPost {
     public void process(CreateBlogPostCommand command) {
         // TODO: verify
 
-        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), command.getTitle(), command.getBody(), command.getAuthor(), new Date());
+        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), command.getTitle(), command.getBody(), command.getAuthor(), Instant.now());
         this.eventService.sendEvent(event);
 
         apply(event);
@@ -141,7 +141,7 @@ public class BlogPost {
      *
      * @return the date created
      */
-    public Date getDateCreated() {
+    public Instant getDateCreated() {
         return dateCreated;
     }
 

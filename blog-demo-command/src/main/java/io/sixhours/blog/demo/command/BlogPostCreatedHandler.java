@@ -39,7 +39,7 @@ public class BlogPostCreatedHandler implements EventHandler {
                     entry("title", ((BlogPostCreated) event).getTitle()),
                     entry("body", ((BlogPostCreated) event).getBody()),
                     entry("author", ((BlogPostCreated) event).getAuthor()),
-                    entry("date_created", ((BlogPostCreated) event).getDateCreated().getTime())
+                    entry("date_created", ((BlogPostCreated) event).getDateCreated())
 //            entry("date_created", ((BlogPostCreated) event).getDateCreated().toInstant().toString())
             );
 

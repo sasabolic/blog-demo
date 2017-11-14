@@ -1,10 +1,8 @@
 package io.sixhours.blog.demo.command;
 
 import com.twitter.bijection.Injection;
-import net.bytebuddy.pool.TypePool;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.generic.GenericRecordBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +15,6 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import scala.util.Try;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;

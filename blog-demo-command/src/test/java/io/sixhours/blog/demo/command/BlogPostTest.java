@@ -4,14 +4,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class BlogPostTest {
 
@@ -44,7 +46,7 @@ public class BlogPostTest {
 
     @Test
     public void givenBlogPostCreatedWhenApplyThenIdIsStored() {
-        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now());
 
         blogPost.apply(event);
 
@@ -53,7 +55,7 @@ public class BlogPostTest {
 
     @Test
     public void givenBlogPostCreatedWhenApplyThenTitleIsStored() {
-        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now());
 
         blogPost.apply(event);
 
@@ -62,7 +64,7 @@ public class BlogPostTest {
 
     @Test
     public void givenBlogPostCreatedWhenApplyThenBodyIsStored() {
-        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now());
 
         blogPost.apply(event);
 
@@ -71,7 +73,7 @@ public class BlogPostTest {
 
     @Test
     public void givenBlogPostCreatedWhenApplyThenCreatedDateIsStored() {
-        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now());
 
         blogPost.apply(event);
 
@@ -80,7 +82,7 @@ public class BlogPostTest {
 
     @Test
     public void givenBlogPostCreatedWhenApplyThenDeleteIsFalse() {
-        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date());
+        BlogPostCreated event = new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now());
 
         blogPost.apply(event);
 

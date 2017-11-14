@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -66,7 +66,7 @@ public class KafkaEventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doReturn(savedEvent).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
+        eventService.sendEvent(new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now()));
 
         verify(producer).send(any(ProducerRecord.class));
     }
@@ -78,6 +78,6 @@ public class KafkaEventServiceTest {
         doReturn(producer).when(eventService).getProducer();
         doThrow(new InterruptedException()).when(producer).send(any(ProducerRecord.class));
 
-        eventService.sendEvent(new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", new Date()));
+        eventService.sendEvent(new BlogPostCreated(UUID.randomUUID(), "Title", "Body", "Author", Instant.now()));
     }
 }
