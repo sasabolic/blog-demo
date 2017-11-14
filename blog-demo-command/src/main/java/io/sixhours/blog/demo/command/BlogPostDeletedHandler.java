@@ -4,7 +4,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -38,6 +37,7 @@ public class BlogPostDeletedHandler implements EventHandler {
                     new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.encode(data));
 
             rec.headers().add("schema", SCHEMA.getBytes());
+            rec.headers().add("class", BlogPostDeleted.class.getCanonicalName().getBytes());
 
             return rec;
         } else if (this.next != null) {

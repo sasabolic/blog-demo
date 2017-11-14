@@ -4,7 +4,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,7 +38,7 @@ public class BlogPostCreatedHandler implements EventHandler {
                     entry("title", ((BlogPostCreated) event).getTitle()),
                     entry("body", ((BlogPostCreated) event).getBody()),
                     entry("author", ((BlogPostCreated) event).getAuthor()),
-                    entry("date_created", ((BlogPostCreated) event).getDateCreated())
+                    entry("date_created", ((BlogPostCreated) event).getDateCreated().toString())
 //            entry("date_created", ((BlogPostCreated) event).getDateCreated().toInstant().toString())
             );
 
@@ -47,6 +46,7 @@ public class BlogPostCreatedHandler implements EventHandler {
                     new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.encode(data));
 
             rec.headers().add("schema", SCHEMA.getBytes());
+            rec.headers().add("class", BlogPostCreated.class.getCanonicalName().getBytes());
 
             return rec;
         } else if (this.next != null) {
