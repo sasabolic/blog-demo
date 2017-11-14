@@ -20,6 +20,7 @@ public class KafkaEventService implements EventService {
 
     private Producer<String, byte[]> producer;
     private EventHandler handler = createFlow();
+    private Properties properties = new Properties();
 
     /**
      * Instantiates a new {@code KafkaEventService}.
@@ -29,8 +30,19 @@ public class KafkaEventService implements EventService {
 
     }
 
-    public KafkaEventService(String bootStrapServers) {
-        createProducer(bootStrapServers);
+    /**
+     * Instantiates a new {@code KafkaEventService}.
+     *
+     * @param bootstrapServers the list of bootstrap servers
+     */
+    public KafkaEventService(String bootstrapServers) {
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        properties.put(ProducerConfig.CLIENT_ID_CONFIG, "blog-demo-producer");
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
+        properties.put(ProducerConfig.ACKS_CONFIG, "all");
+
+        producer = new KafkaProducer<>(properties);
     }
 
     /**
@@ -43,7 +55,6 @@ public class KafkaEventService implements EventService {
     }
 
     public void sendEvent(Event value) {
-
         final ProducerRecord<String, byte[]> rec = handler.encode(value);
 
         try {
@@ -54,9 +65,8 @@ public class KafkaEventService implements EventService {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         } finally {
-            if (getProducer() != null) {
-//                getProducer().close();
-            }
+            producer.flush();
+//            producer.close();
         }
     }
 
@@ -69,19 +79,6 @@ public class KafkaEventService implements EventService {
         blogPostCreatedHandler.setNext(blogPostUpdatedHandler);
 
         return blogPostDeletedHandler;
-    }
-
-    private void createProducer(String bootStrapServer) {
-        long start = System.currentTimeMillis();
-        Properties p = new Properties();
-
-        p.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServer);
-        p.put(ProducerConfig.CLIENT_ID_CONFIG, "blog-demo-producer");
-        p.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        p.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
-
-        producer = new KafkaProducer<>(p);
-        log.info("SALE PRODUCER CREATED in {}ms", System.currentTimeMillis() - start);
     }
 
 }

@@ -4,6 +4,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -30,10 +32,10 @@ public class BlogPostDeletedHandler implements EventHandler {
         if (event instanceof BlogPostDeleted) {
             log.debug("Event BlogPostDeleted: '{}'", ((BlogPostDeleted) event).getAggregateId());
 
-            avroService.addField("aggregate_id", ((BlogPostDeleted) event).getAggregateId().toString());
+            Map<String, Object> data = Map.of("aggregate_id", ((BlogPostDeleted) event).getAggregateId().toString());
 
             ProducerRecord<String, byte[]> rec =
-                    new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.getData());
+                    new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.encode(data));
 
             rec.headers().add("schema", SCHEMA.getBytes());
 

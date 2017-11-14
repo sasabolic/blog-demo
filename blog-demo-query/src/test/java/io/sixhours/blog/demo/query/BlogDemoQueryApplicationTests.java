@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo.blogdemoquery;
+package io.sixhours.blog.demo.command.blogdemoquery;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

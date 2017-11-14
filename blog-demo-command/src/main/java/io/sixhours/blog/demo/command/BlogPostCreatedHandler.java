@@ -4,7 +4,11 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import static java.util.Map.entry;
 
 /**
  * Handles {@link BlogPostCreated} events.
@@ -30,15 +34,17 @@ public class BlogPostCreatedHandler implements EventHandler {
         if (event instanceof BlogPostCreated) {
             log.debug("Event BlogPostCreated: '{}'", ((BlogPostCreated) event).getAggregateId());
 
-            avroService.addField("aggregate_id", ((BlogPostCreated) event).getAggregateId().toString());
-            avroService.addField("title", ((BlogPostCreated) event).getTitle());
-            avroService.addField("body", ((BlogPostCreated) event).getBody());
-            avroService.addField("author", ((BlogPostCreated) event).getAuthor());
-            avroService.addField("date_created", ((BlogPostCreated) event).getDateCreated().getTime());
-//            avroService.addField("date_created", ((BlogPostCreated) event).getDateCreated().toInstant().toString());
+            Map<String, Object> data = Map.ofEntries(
+                    entry("aggregate_id", ((BlogPostCreated) event).getAggregateId().toString()),
+                    entry("title", ((BlogPostCreated) event).getTitle()),
+                    entry("body", ((BlogPostCreated) event).getBody()),
+                    entry("author", ((BlogPostCreated) event).getAuthor()),
+                    entry("date_created", ((BlogPostCreated) event).getDateCreated().getTime())
+//            entry("date_created", ((BlogPostCreated) event).getDateCreated().toInstant().toString())
+            );
 
             ProducerRecord<String, byte[]> rec =
-                    new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.getData());
+                    new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.encode(data));
 
             rec.headers().add("schema", SCHEMA.getBytes());
 

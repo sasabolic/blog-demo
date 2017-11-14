@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 public class AvroService {
 
     private Injection<GenericRecord, byte[]> recordInjection;
-    private GenericRecord record;
+    private Schema schema;
 
     /**
      * Instantiates a new {@code AvroService}.
@@ -38,52 +39,37 @@ public class AvroService {
             lines.close();
 
             Schema.Parser parser = new Schema.Parser();
-            Schema schema = parser.parse(data.toString().trim());
+            schema = parser.parse(data.toString().trim());
 
             recordInjection = GenericAvroCodecs.toBinary(schema);
 
-            record =  new GenericData.Record(schema);
 
         } catch (URISyntaxException | IOException e) {
             throw new RuntimeException("Could not create AvroService", e);
         }
     }
 
-
-    /**
-     * Adds field to Avro record.
-     *
-     * @param key   the key
-     * @param value the value
-     */
-    public void addField(String key, Object value) {
-        getRecord().put(key, value);
-    }
-
     /**
      * Returns serialized data as byte array.
      *
+     * @param data the data
      * @return the byte [ ]
      */
-    byte[] getData() {
-        return getRecordInjection().apply(getRecord());
+    byte[] encode(Map<String, Object> data) {
+        GenericData.Record record = new GenericData.Record(schema);
+
+        data.forEach((k, v) -> record.put(k, v));
+
+        return recordInjection.apply(record);
     }
 
     /**
-     * Returns record {@link Injection}.
+     * Deserializes data from byte[] to {@link GenericRecord}.
      *
-     * @return the record injection
+     * @param value the value
+     * @return the generic record
      */
-    public Injection<GenericRecord, byte[]> getRecordInjection() {
-        return recordInjection;
-    }
-
-    /**
-     * Returns  {@link GenericRecord}.
-     *
-     * @return the record
-     */
-    public GenericRecord getRecord() {
-        return record;
+    GenericRecord decode(byte[] value) {
+        return recordInjection.invert(value).get();
     }
 }

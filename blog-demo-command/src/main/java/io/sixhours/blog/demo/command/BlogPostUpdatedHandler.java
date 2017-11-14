@@ -4,7 +4,11 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import static java.util.Map.entry;
 
 /**
  * Handles {@link BlogPostUpdated} events.
@@ -30,13 +34,15 @@ public class BlogPostUpdatedHandler implements EventHandler {
         if (event instanceof BlogPostUpdated) {
             log.debug("Event BlogPostUpdated: '{}'", ((BlogPostUpdated) event).getAggregateId());
 
-            avroService.addField("aggregate_id", ((BlogPostUpdated) event).getAggregateId().toString());
-            avroService.addField("title", ((BlogPostUpdated) event).getTitle());
-            avroService.addField("body", ((BlogPostUpdated) event).getBody());
-            avroService.addField("author", ((BlogPostUpdated) event).getAuthor());
+            Map<String, Object> data = Map.ofEntries(
+                    entry("aggregate_id", ((BlogPostUpdated) event).getAggregateId().toString()),
+                    entry("title", ((BlogPostUpdated) event).getTitle()),
+                    entry("body", ((BlogPostUpdated) event).getBody()),
+                    entry("author", ((BlogPostUpdated) event).getAuthor())
+            );
 
             ProducerRecord<String, byte[]> rec =
-                    new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.getData());
+                    new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.encode(data));
 
             rec.headers().add("schema", SCHEMA.getBytes());
 
