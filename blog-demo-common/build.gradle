@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+group = 'io.sixhours.blog.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.9
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.apache.avro:avro:1.8.2')
+	compile('com.twitter:bijection-avro_2.11:0.9.6')
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}

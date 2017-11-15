@@ -30,6 +30,7 @@ repositories {
 
 
 dependencies {
+	compile project(':blog-demo-common')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.apache.kafka:kafka-clients:1.0.0')
 	compile('org.apache.avro:avro:1.8.2')

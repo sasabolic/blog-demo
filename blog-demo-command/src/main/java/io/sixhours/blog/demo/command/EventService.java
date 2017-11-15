@@ -1,5 +1,7 @@
 package io.sixhours.blog.demo.command;
 
+import io.sixhours.blog.demo.common.Event;
+
 /**
  * Service used to send events.
  *

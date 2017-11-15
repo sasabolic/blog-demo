@@ -2,7 +2,6 @@ package io.sixhours.blog.demo.common;
 
 import org.apache.avro.generic.GenericRecord;
 
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 

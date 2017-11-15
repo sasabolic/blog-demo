@@ -1,0 +1,1 @@
+include "blog-demo-command", "blog-demo-common", "blog-demo-query"

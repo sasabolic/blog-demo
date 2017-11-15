@@ -1,5 +1,6 @@
 package io.sixhours.blog.demo.command;
 
+import io.sixhours.blog.demo.common.Event;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 /**

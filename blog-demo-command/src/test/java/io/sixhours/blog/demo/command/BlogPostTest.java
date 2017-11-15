@@ -1,5 +1,8 @@
 package io.sixhours.blog.demo.command;
 
+import io.sixhours.blog.demo.common.BlogPostCreated;
+import io.sixhours.blog.demo.common.BlogPostDeleted;
+import io.sixhours.blog.demo.common.BlogPostUpdated;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

@@ -37,4 +37,16 @@ public abstract class Event {
         this.date = date;
         this.topicName = topicName;
     }
+
+    public UUID getAggregateId() {
+        return aggregateId;
+    }
+
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
 }

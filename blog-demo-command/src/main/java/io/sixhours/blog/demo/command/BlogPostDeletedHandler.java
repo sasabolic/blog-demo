@@ -1,5 +1,7 @@
 package io.sixhours.blog.demo.command;
 
+import io.sixhours.blog.demo.common.BlogPostDeleted;
+import io.sixhours.blog.demo.common.Event;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,7 @@ public class BlogPostDeletedHandler implements EventHandler {
             Map<String, Object> data = Map.of("aggregate_id", ((BlogPostDeleted) event).getAggregateId().toString());
 
             ProducerRecord<String, byte[]> rec =
-                    new ProducerRecord<>(event.topicName, event.aggregateId.toString(), avroService.encode(data));
+                    new ProducerRecord<>(event.getTopicName(), event.getAggregateId().toString(), avroService.encode(data));
 
             rec.headers().add("schema", SCHEMA.getBytes());
             rec.headers().add("class", BlogPostDeleted.class.getCanonicalName().getBytes());
