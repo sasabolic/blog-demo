@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class KafkaEventServiceTest {
 
     @Rule
-    public ExpectedException exception = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     private KafkaEventService eventService;
     private Producer<String, String> producer;
@@ -73,7 +73,7 @@ public class KafkaEventServiceTest {
 
     @Test
     public void givenExceptionWhenProducerSendThenThrowRuntimeException() {
-        exception.expect(RuntimeException.class);
+        thrown.expect(RuntimeException.class);
 
         doReturn(producer).when(eventService).getProducer();
         doThrow(new InterruptedException()).when(producer).send(any(ProducerRecord.class));
