@@ -1,4 +1,4 @@
-package io.sixhours.blog.demo.command;
+package io.sixhours.blog.demo.integrationtest;
 
 import com.palantir.docker.compose.DockerComposeRule;
 import cucumber.api.CucumberOptions;
@@ -9,11 +9,12 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = {"classpath:features"},
                     format = {"pretty", "html:build/reports/cucumber-report"},
-                    glue = {"io.sixhours.blog.demo.command.steps"})
+                    glue = {"io.sixhours.blog.demo.integrationtest.steps"})
 public class BlogPostITest {
 
     @ClassRule
     public static DockerComposeRule docker = DockerComposeRule.builder()
-            .file("src/integration-test/resources/docker-compose.yml")
+            .file("docker-compose.yml")
             .build();
+
 }
