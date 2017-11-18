@@ -11,9 +11,6 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter')
 	compile('org.apache.avro:avro:1.8.2')
 	compile('com.twitter:bijection-avro_2.11:0.9.6')
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

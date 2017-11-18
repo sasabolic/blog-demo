@@ -3,7 +3,6 @@ package io.sixhours.blog.demo.common;
 import org.apache.avro.generic.GenericRecord;
 
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 /**
@@ -13,10 +12,14 @@ import java.util.UUID;
  */
 public class BlogPostCreated extends BlogPostEvent {
 
-    private final String title;
-    private final String body;
-    private final String author;
-    private final Instant dateCreated;
+    private String title;
+    private String body;
+    private String author;
+    private Instant dateCreated;
+
+    public BlogPostCreated() {
+        super();
+    }
 
     /**
      * Instantiates a new {@code BlogPostCreated} event.
@@ -28,7 +31,7 @@ public class BlogPostCreated extends BlogPostEvent {
      * @param dateCreated the date created
      */
     public BlogPostCreated(UUID aggregateId, String title, String body, String author, Instant dateCreated) {
-        super(aggregateId, ZonedDateTime.now());
+        super(aggregateId, Instant.now());
         this.title = title;
         this.body = body;
         this.author = author;
@@ -36,7 +39,7 @@ public class BlogPostCreated extends BlogPostEvent {
     }
 
     public BlogPostCreated(GenericRecord record) {
-        super(UUID.fromString(String.valueOf(record.get("aggregate_id"))), ZonedDateTime.now());
+        super(UUID.fromString(String.valueOf(record.get("aggregate_id"))), Instant.now().now());
         this.title = String.valueOf(record.get("title"));
         this.body = String.valueOf(record.get("body"));
         this.author = String.valueOf(record.get("author"));

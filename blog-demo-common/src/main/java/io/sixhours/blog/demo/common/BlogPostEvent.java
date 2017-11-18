@@ -1,6 +1,6 @@
 package io.sixhours.blog.demo.common;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -16,8 +16,11 @@ public abstract class BlogPostEvent extends Event {
      * @param aggregateId the aggregate id
      * @param date        the date
      */
-    public BlogPostEvent(UUID aggregateId, ZonedDateTime date) {
+    public BlogPostEvent(UUID aggregateId, Instant date) {
         super(aggregateId, date, "blog-demo.post");
     }
 
+    public BlogPostEvent() {
+        super();
+    }
 }

@@ -1,6 +1,6 @@
 package io.sixhours.blog.demo.common;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -13,17 +13,17 @@ public abstract class Event {
     /**
      * ID of the aggregate on which event occured.
      */
-    protected final UUID aggregateId;
+    protected UUID aggregateId;
     /**
      * Time when event was created.
      */
-    protected final ZonedDateTime date;
+    protected final Instant date;
 
     // TODO: move this to separate type KafkaEvent extends Event
     /**
      * Topic name where events will be send.
      */
-    protected final String topicName;
+    protected String topicName;
 
     /**
      * Instantiates a new {@code Event}.
@@ -32,17 +32,21 @@ public abstract class Event {
      * @param date        the date
      * @param topicName   the topic name
      */
-    public Event(UUID aggregateId, ZonedDateTime date, String topicName) {
+    public Event(UUID aggregateId, Instant date, String topicName) {
         this.aggregateId = aggregateId;
         this.date = date;
         this.topicName = topicName;
+    }
+
+    public Event() {
+        this.date = Instant.now();
     }
 
     public UUID getAggregateId() {
         return aggregateId;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 

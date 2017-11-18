@@ -2,7 +2,7 @@ package io.sixhours.blog.demo.common;
 
 import org.apache.avro.generic.GenericRecord;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -12,17 +12,20 @@ import java.util.UUID;
  */
 public class BlogPostDeleted extends BlogPostEvent {
 
+    public BlogPostDeleted() {
+        super();
+    }
     /**
      * Instantiates a new {@code BlogPostDeleted} event.
      *
      * @param aggregateId the aggregate id
      */
     public BlogPostDeleted(UUID aggregateId) {
-        super(aggregateId, ZonedDateTime.now());
+        super(aggregateId, Instant.now());
     }
 
     public BlogPostDeleted(GenericRecord record) {
-        super(UUID.fromString(String.valueOf(record.get("aggregate_id"))), ZonedDateTime.now());
+        super(UUID.fromString(String.valueOf(record.get("aggregate_id"))), Instant.now());
     }
 
     /**
