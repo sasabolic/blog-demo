@@ -2,8 +2,5 @@
 
 echo "Building"
 
-# Build blog-demo-command project
-blog-demo-command/./gradlew -p blog-demo-command clean buildDocker
-
-# Build blog-demo-query project
-blog-demo-query/./gradlew -p blog-demo-query clean buildDocker
+# Build Docker images for blog-demo-command & blog-demo-query projects
+./gradlew clean buildDocker
