@@ -4,7 +4,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -14,13 +16,19 @@ public class KafkaInitializer implements ApplicationListener<ApplicationReadyEve
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        int numberOfThreads = 3;
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
 
-        KafkaConsumerService consumer = new KafkaConsumerService("blog-demo-query", Collections.singletonList("blog-demo.post"));
-        executor.submit(consumer);
+        final List<KafkaConsumerService> consumers = new ArrayList<>();
+        for (int i = 0; i < numberOfThreads; i++) {
+            KafkaConsumerService consumer = new KafkaConsumerService("blog-demo-query", Collections.singletonList("blog-demo.post"));
+            consumers.add(consumer);
+
+            executor.submit(consumer);
+        }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            consumer.shutdown();
+            consumers.forEach(consumer -> consumer.shutdown());
             executor.shutdown();
             try {
                 executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
