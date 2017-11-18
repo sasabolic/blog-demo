@@ -8,13 +8,12 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
