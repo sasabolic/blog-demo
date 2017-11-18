@@ -16,6 +16,7 @@ public class BlogPostUpdatedHandler implements EventHandler {
     private static final Logger log = LoggerFactory.getLogger(BlogPostUpdatedHandler.class);
 
     private EventHandler next;
+
     private BlogPostUpdateService updateService = new BlogPostUpdateService();
 
     @Override
@@ -25,7 +26,7 @@ public class BlogPostUpdatedHandler implements EventHandler {
 
     @Override
     public void handle(Event event) {
-        Objects.requireNonNull(event, "Event not be null");
+        Objects.requireNonNull(event, "Event must not be null");
 
         if (event instanceof BlogPostUpdated) {
             updateService.update(BlogPostUpdated.class.cast(event));

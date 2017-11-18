@@ -25,7 +25,7 @@ public class BlogPostCreatedHandler implements EventHandler {
 
     @Override
     public void handle(Event event) {
-        Objects.requireNonNull(event, "Event not be null");
+        Objects.requireNonNull(event, "Event must not be null");
 
         if (event instanceof BlogPostCreated) {
             updateService.create(BlogPostCreated.class.cast(event));
