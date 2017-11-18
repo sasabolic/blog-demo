@@ -1,21 +1,23 @@
 version: '3'
 services:
-  blog-demo-command:
-    image: blog-demo-command
-    ports:
-      - 8080:8080
-    depends_on:
-      - zookeeper
-      - kafka
-      - kafka1
-  blog-demo-query:
-    image: blog-demo-query
-    ports:
-      - 8081:8081
-    depends_on:
-      - zookeeper
-      - kafka
-      - kafka1
+  # blog-demo-command:
+  #   image: blog-demo-command
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
+  #     - kafka1
+  # blog-demo-query:
+  #   image: blog-demo-query
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
+  #     - kafka1
+  #     - elasticsearch1
+  #     - elasticsearch2
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
@@ -25,24 +27,52 @@ services:
     ports:
       - "9092:9092"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_PORT: 9092
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.124
+      KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_LEADER_REBALANCE_ENABLE: 'true'
+      KAFKA_CREATE_TOPICS: "blog-demo.post:6:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zookeeper
-  kafka1:
-      image: wurstmeister/kafka
-      ports:
-        - "9093:9093"
-      environment:
-        KAFKA_BROKER_ID: 2
-        KAFKA_PORT: 9093
-        KAFKA_ADVERTISED_PORT: 9093
-        KAFKA_ADVERTISED_HOST_NAME: 192.168.1.124
-        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        KAFKA_AUTO_LEADER_REBALANCE_ENABLE: 'true'
-      depends_on:
-        - zookeeper
-        - kafka
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.0.0
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.0.0
+    container_name: elasticsearch2
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+
+networks:
+  esnet:
