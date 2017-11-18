@@ -1,0 +1,25 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.8.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+
+    test {
+        exclude '**/*IntegrationTest*'
+    }
+
+    task integrationTest(type: Test, description: 'Runs the integration tests', group: 'Verification') {
+        include '**/*IntegrationTest.*'
+        include '**/*IntegrationSpec.*'
+    }
+}
