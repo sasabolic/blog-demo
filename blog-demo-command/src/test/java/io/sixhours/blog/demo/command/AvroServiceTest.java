@@ -12,12 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 import scala.util.Try;
 
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,7 +45,7 @@ public class AvroServiceTest {
     }
 
     @Test
-    public void whenDecodeThenInvokeRecordInjectionInver() {
+    public void whenDecodeThenInvokeRecordInjectionInvert() {
         Try mTry = mock(Try.class);
         GenericData.Record record = mock(GenericData.Record.class);
 
