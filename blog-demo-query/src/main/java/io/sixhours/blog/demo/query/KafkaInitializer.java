@@ -24,7 +24,7 @@ public class KafkaInitializer implements ApplicationListener<ApplicationReadyEve
             KafkaConsumerService consumer = new KafkaConsumerService("blog-demo-query", Collections.singletonList("blog-demo.post"));
             consumers.add(consumer);
 
-            executor.submit(consumer);
+            executor.execute(consumer);
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
