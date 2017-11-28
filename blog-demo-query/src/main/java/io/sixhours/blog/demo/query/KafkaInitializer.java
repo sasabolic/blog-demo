@@ -1,9 +1,13 @@
 package io.sixhours.blog.demo.query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,13 +17,19 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class KafkaInitializer implements ApplicationListener<ApplicationReadyEvent> {
+    private static final Logger log = LoggerFactory.getLogger(KafkaInitializer.class);
+
+    private List<KafkaConsumerService> consumers = new ArrayList<>();
+
+    @Value("${consumer.number}")
+    private int numberOfThreads;
+
+    private ExecutorService executor;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        int numberOfThreads = 3;
-        ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-
-        final List<KafkaConsumerService> consumers = new ArrayList<>();
+        log.info("STARTING Consumer threads.");
+        executor = Executors.newFixedThreadPool(numberOfThreads);
         for (int i = 0; i < numberOfThreads; i++) {
             KafkaConsumerService consumer = new KafkaConsumerService("blog-demo-query", Collections.singletonList("blog-demo.post"));
             consumers.add(consumer);
@@ -27,14 +37,17 @@ public class KafkaInitializer implements ApplicationListener<ApplicationReadyEve
             executor.execute(consumer);
         }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            consumers.forEach(consumer -> consumer.shutdown());
-            executor.shutdown();
-            try {
-                executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }));
+    }
+
+    @PreDestroy
+    public void destroy() {
+        log.info("DESTROYING Consumer threads.");
+        consumers.forEach(consumer -> consumer.shutdown());
+        executor.shutdown();
+        try {
+            executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
