@@ -21,7 +21,7 @@ public class KafkaInitializer implements ApplicationListener<ApplicationReadyEve
 
     private List<KafkaConsumerService> consumers = new ArrayList<>();
 
-    @Value("${consumer.number}")
+    @Value("${consumer.number:1}")
     private int numberOfThreads;
 
     private ExecutorService executor;
