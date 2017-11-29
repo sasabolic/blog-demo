@@ -23,4 +23,9 @@ dependencies {
 	compile("com.fasterxml.jackson.module:jackson-module-parameter-names:${jacksonVersion}")
 	compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonVersion}")
 	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
+
+	testCompile('org.mockito:mockito-core:1.10.19')
+	testCompile('org.hamcrest:hamcrest-all:1.3')
+	testCompile('junit:junit:4.12')
+
 }
