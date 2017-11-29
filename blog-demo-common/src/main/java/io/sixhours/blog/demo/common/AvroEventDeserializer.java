@@ -16,15 +16,38 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Deserializer which converts byte array to Object using Avro.
+ *
+ * @author Sasa Bolic
+ */
 public class AvroEventDeserializer implements Deserializer<Event> {
     private static final Logger log = LoggerFactory.getLogger(AvroEventDeserializer.class);
 
+    /**
+     * Avro schema used to serialize data.
+     */
     public static final Schema SCHEMA = SchemaBuilder
             .record("Event").namespace("io.sixhours.blog.demo.common")
             .fields()
             .name("class").type().stringType().noDefault()
             .name("payload").type().stringType().noDefault()
             .endRecord();
+
+    private Injection<GenericRecord, byte[]> recordInjection;
+    private ObjectMapper mapper;
+
+    /**
+     * Instantiates a new {@code AvroEventDeserializer}.
+     */
+    public AvroEventDeserializer() {
+        recordInjection = GenericAvroCodecs.toBinary(SCHEMA);
+
+        mapper = new ObjectMapper()
+                .registerModule(new ParameterNamesModule())
+                .registerModule(new Jdk8Module())
+                .registerModule(new JavaTimeModule());
+    }
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
@@ -33,26 +56,23 @@ public class AvroEventDeserializer implements Deserializer<Event> {
 
     @Override
     public Event deserialize(String topic, byte[] data) {
-        Injection<GenericRecord, byte[]> recordInjection = GenericAvroCodecs.toBinary(SCHEMA);
+        if (data == null) {
+            return null;
+        }
 
         GenericRecord genericRecord = recordInjection.invert(data).get();
 
         try {
-            final Class<? extends BlogPostEvent> eventClass = (Class<? extends BlogPostEvent>) Class.forName(String.valueOf(genericRecord.get("class")));
-
-            ObjectMapper mapper = new ObjectMapper()
-                    .registerModule(new ParameterNamesModule())
-                    .registerModule(new Jdk8Module())
-                    .registerModule(new JavaTimeModule());
+            final Class<? extends Event> eventClass = (Class<? extends Event>) Class.forName(String.valueOf(genericRecord.get("class")));
 
             String payload = String.valueOf(genericRecord.get("payload"));
 
             log.info("Payload: '{}'", payload);
+
             return mapper.readValue(payload, eventClass);
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Could not deserialize data", e);
         }
-        return null;
     }
 
     @Override
