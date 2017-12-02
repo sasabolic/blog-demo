@@ -6,8 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.twitter.bijection.Injection;
 import com.twitter.bijection.avro.GenericAvroCodecs;
-import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.slf4j.Logger;
@@ -16,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Map;
 
+import static io.sixhours.blog.demo.common.AvroConstants.SCHEMA;
+
 /**
  * Deserializer which converts byte array to Object using Avro.
  *
@@ -23,16 +23,6 @@ import java.util.Map;
  */
 public class AvroEventDeserializer implements Deserializer<Event> {
     private static final Logger log = LoggerFactory.getLogger(AvroEventDeserializer.class);
-
-    /**
-     * Avro schema used to serialize data.
-     */
-    public static final Schema SCHEMA = SchemaBuilder
-            .record("Event").namespace("io.sixhours.blog.demo.common")
-            .fields()
-            .name("class").type().stringType().noDefault()
-            .name("payload").type().stringType().noDefault()
-            .endRecord();
 
     private Injection<GenericRecord, byte[]> recordInjection;
     private ObjectMapper mapper;
