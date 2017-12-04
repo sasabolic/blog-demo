@@ -20,6 +20,7 @@ dependencies {
     compile('org.apache.kafka:kafka-clients:1.0.0')
     compile('org.apache.avro:avro:1.8.2')
     compile('com.twitter:bijection-avro_2.11:0.9.6')
+
 	compile('com.fasterxml.jackson.module:jackson-module-parameter-names')
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
