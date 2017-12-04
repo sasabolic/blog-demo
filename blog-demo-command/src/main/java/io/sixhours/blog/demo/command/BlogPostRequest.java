@@ -3,14 +3,14 @@ package io.sixhours.blog.demo.command;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CreateBlogPostRequest {
+public class BlogPostRequest {
 
     private String title;
     private String body;
     private String author;
 
     @JsonCreator
-    public CreateBlogPostRequest(
+    public BlogPostRequest(
             @JsonProperty("title") String title,
             @JsonProperty("body") String body,
             @JsonProperty("author") String author) {
