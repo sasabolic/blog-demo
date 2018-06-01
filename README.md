@@ -19,7 +19,7 @@ Build a Docker image for the demo application by running:
 This will create the `blog-demo` Docker image in your machine's local Docker image registry.
 To start the demo application, zookeper and kafka servers, run:
 
-    docker-compose -f src/main/docker/docker-compose.yml up -d
+    docker-compose up -d
 
 You should now be able to access REST endpoints e.g.
 
@@ -27,4 +27,4 @@ http://localhost:8080/post
 
 To stop and remove the containers, run:
 
-    docker-compose -f src/main/docker/docker-compose.yml down
+    docker-compose down
