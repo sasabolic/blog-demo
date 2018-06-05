@@ -18,6 +18,8 @@ dependencies {
 
 	compile('org.elasticsearch.client:elasticsearch-rest-high-level-client:6.0.0-rc2')
 	compile('org.elasticsearch:elasticsearch:6.0.0-rc2')
+	compileOnly('org.projectlombok:lombok:1.16.22')
+
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.mockito:mockito-core:1.10.19')
