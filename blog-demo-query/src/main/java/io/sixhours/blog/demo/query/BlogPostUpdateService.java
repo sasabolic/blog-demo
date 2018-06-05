@@ -15,23 +15,20 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.io.IOException;
 
-public class BlogPostUpdateService {
+@Service
+public class BlogPostUpdateService implements InitializingBean, DisposableBean {
     private static final Logger log = LoggerFactory.getLogger(BlogPostUpdateService.class);
 
     private RestHighLevelClient client;
 
-
-    public BlogPostUpdateService() {
-        init();
-    }
-
-    @PostConstruct
-    public void init() {
+    @Override
+    public void afterPropertiesSet() {
         client = new RestHighLevelClient(
                 RestClient.builder(
                         new HttpHost("localhost", 9200, "http")));
@@ -92,7 +89,6 @@ public class BlogPostUpdateService {
         }
     }
 
-    @PreDestroy
     public void destroy() {
         if (client != null) {
             try {
