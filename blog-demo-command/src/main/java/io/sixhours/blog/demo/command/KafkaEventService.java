@@ -6,9 +6,9 @@ import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PreDestroy;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
  * @author Sasa Bolic
  */
 @Service
-public class KafkaEventService implements EventService {
+public class KafkaEventService implements EventService, DisposableBean {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaEventService.class);
 
@@ -72,8 +72,8 @@ public class KafkaEventService implements EventService {
         }
     }
 
-    @PreDestroy
-    public void destroy() {
+    @Override
+    public void destroy() throws Exception {
         if (producer != null) {
             producer.close();
         }
